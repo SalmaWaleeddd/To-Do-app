@@ -26,8 +26,6 @@ export class TaskListComponent {
 
   onDeleteTask(task: Task) {
     this.deleteTask.emit(task);
-    console.log("Deleted Task:", task);
-
   }
 
   isEditing(task: Task): boolean {
