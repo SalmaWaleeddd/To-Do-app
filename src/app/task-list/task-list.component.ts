@@ -1,4 +1,4 @@
-import { Component , output, input} from '@angular/core';
+import { Component, output, input } from '@angular/core';
 import { NgClass } from '@angular/common';
 
 import { Task } from '../models/task';
@@ -12,9 +12,12 @@ import { Task } from '../models/task';
 })
 export class TaskListComponent {
 
-  tasks=input<Task[]>();
-  deleteTask= output<Task>();
-  toggleTask= output<Task>();
+  deleteTask = output<Task>();
+  toggleTask = output<Task>();
+  editTask = output<{ task: Task, newTitle: string }>();
+
+  tasks = input<Task[]>();
+  editingTaskId : number | null = null;
 
   toggleTaskCompletion(task: Task) {
     this.toggleTask.emit(task);
@@ -25,5 +28,23 @@ export class TaskListComponent {
     this.deleteTask.emit(task);
     console.log("Deleted Task:", task);
 
+  }
+
+  isEditing(task: Task): boolean {
+    return this.editingTaskId === task.id;
+  }
+
+  cancelEdit() {
+    this.editingTaskId = null;
+  }
+
+  startEdit(task: Task) {
+    this.editingTaskId = task.id;
+  }
+
+  saveEdit(task: Task, newTitle: string) {
+    this.editTask.emit({ task, newTitle });
+    this.editingTaskId = null;
+    console.log("Edited Task:", task);
   }
 }
