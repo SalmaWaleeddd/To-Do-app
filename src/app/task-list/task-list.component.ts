@@ -45,6 +45,5 @@ export class TaskListComponent {
   saveEdit(task: Task, newTitle: string) {
     this.editTask.emit({ task, newTitle });
     this.editingTaskId = null;
-    console.log("Edited Task:", task);
   }
 }

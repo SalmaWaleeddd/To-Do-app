@@ -37,6 +37,14 @@ export class TaskManagerComponent {
       this.saveToLocalStorage();
     }
   }
+  
+  editTask(event: { task: Task, newTitle: string }) {
+    const t = this.tasks.find(t => t.id === event.task.id);
+    if (t) {
+      t.title = event.newTitle;
+      this.saveToLocalStorage();
+    }
+  }
 
   saveToLocalStorage() {
     localStorage.setItem('tasks', JSON.stringify(this.tasks));
