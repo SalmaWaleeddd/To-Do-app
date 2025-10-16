@@ -1,18 +1,22 @@
 @for(task of tasks(); track task.id){
-<div>
+<div class="task-item">
 
   <input type="checkbox" [checked]="task.completed" title="completed" (change)="toggleTaskCompletion(task)" />
   @if(isEditing(task)){
-  <input type="text" [value]="task.title" #editInput/>
-  <button type="button" (click)="saveEdit(task,editInput.value)">Save</button>
-  <button type="button" (click)="cancelEdit()">Cancel</button>
+  <input type="text" [value]="task.title" #editInput class="edit-input" />
+  <div class="task-actions">
+    <button type="button" (click)="saveEdit(task,editInput.value)">Save</button>
+    <button type="button" (click)="cancelEdit()">Cancel</button>
+  </div>
   }@else{
   <span [ngClass]="{ 'completed': task.completed }">{{ task.title }}</span>
+  <div class="task-actions">
   <button type="button" (click)="startEdit(task)">Edit</button>
   <button type=button (click)="onDeleteTask(task)">Delete</button>
+  </div>
   }
 
 </div>
 }@empty{
-<p>No tasks available.</p>
+<p class="empty-state">No tasks available.</p>
 }
