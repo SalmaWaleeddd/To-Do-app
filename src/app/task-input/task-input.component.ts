@@ -1,5 +1,7 @@
-import { Component,output } from '@angular/core';
+import { Component, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
+import { Task } from '../models/task';
 
 
 @Component({
@@ -9,12 +11,19 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './task-input.component.scss'
 })
 export class TaskInputComponent {
-  task: string = '';
-  addTask=output<string>()
+  taskTitle: string = '';
+  addTask = output<Task>()
 
   onAddTask() {
-    if(!this.task) return;
-    this.addTask.emit(this.task);
-    this.task='';   
+    if (!this.taskTitle) return;
+    
+    const newTask: Task = {
+      id: Date.now(),
+      title: this.taskTitle,
+      completed: false
+    }
+
+    this.addTask.emit(newTask);
+    this.taskTitle = '';
   }
 }
