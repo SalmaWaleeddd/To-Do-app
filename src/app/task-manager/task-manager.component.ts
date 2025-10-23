@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { TaskListComponent } from '../task-list/task-list.component';
 import { TaskInputComponent } from '../task-input/task-input.component';
 import { Task } from '../models/task';
@@ -10,43 +10,46 @@ import { Task } from '../models/task';
   styleUrl: './task-manager.component.scss'
 })
 export class TaskManagerComponent {
-  tasks: Task[] = [];
+  tasks=signal<Task[]>([]);
 
 
   ngOnInit() {
     const savedTasks = localStorage.getItem('tasks');
     if (savedTasks) {
-      this.tasks = JSON.parse(savedTasks);
+      this.tasks.set(JSON.parse(savedTasks));
     }
   }
 
   addTask(task: Task) {
-    this.tasks.push(task);
+    this.tasks.update(tasks => [...tasks, task]); 
+    console.log(this.tasks());
     this.saveToLocalStorage();
   }
 
   deleteTask(task: Task) {
-    this.tasks = this.tasks.filter(t => t.id !== task.id);
+    this.tasks.update(tasks => tasks.filter(t => t.id !== task.id));
     this.saveToLocalStorage();
   }
 
   toggleTask(task: Task) {
-    const t = this.tasks.find(t => t.id === task.id);
-    if (t) {
-      t.completed = !t.completed;
-      this.saveToLocalStorage();
-    }
-  }
+  this.tasks.update(tasks => 
+    tasks.map(t => 
+      t.id === task.id ? { ...t, completed: !t.completed } : t
+    )
+  );
+  this.saveToLocalStorage();
+}
   
   editTask(event: { task: Task, newTitle: string }) {
-    const t = this.tasks.find(t => t.id === event.task.id);
-    if (t) {
-      t.title = event.newTitle;
-      this.saveToLocalStorage();
-    }
-  }
+  this.tasks.update(tasks => 
+    tasks.map(t => 
+      t.id === event.task.id ? { ...t, title: event.newTitle } : t
+    )
+  );
+  this.saveToLocalStorage();
+}
 
   saveToLocalStorage() {
-    localStorage.setItem('tasks', JSON.stringify(this.tasks));
+    localStorage.setItem('tasks', JSON.stringify(this.tasks()));
   }
 }
