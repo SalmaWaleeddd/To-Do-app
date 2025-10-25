@@ -14,11 +14,9 @@ export class TaskListComponent {
 
   deleteTask = output<Task>();
   toggleTask = output<Task>();
-  editTask = output<{ task: Task, newTitle: string }>();
+  editTask = output<Task>();
 
   tasks = input<Task[]>();
-
-  editingTaskId = signal<number | null>(null);
 
   toggleTaskCompletion(task: Task) {
     this.toggleTask.emit(task);
@@ -29,20 +27,22 @@ export class TaskListComponent {
     this.deleteTask.emit(task);
   }
 
+/*   //TODO: remove it after update in code
   isEditing(task: Task): boolean {
     return this.editingTaskId() === task.id;
   }
-
+  //TODO: remove it after update in code
   cancelEdit() {
     this.editingTaskId.set(null);
-  }
+  } */
 
   startEdit(task: Task) {
-    this.editingTaskId.set(task.id);
+    this.editTask.emit(task);
   }
 
-  saveEdit(task: Task, newTitle: string) {
+  //TODO: remove it after update in code
+/*   saveEdit(task: Task, newTitle: string) {
     this.editTask.emit({ task, newTitle });
     this.editingTaskId.set(null);
-  }
+  } */
 }

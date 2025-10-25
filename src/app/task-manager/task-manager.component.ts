@@ -10,7 +10,9 @@ import { Task } from '../models/task';
   styleUrl: './task-manager.component.scss'
 })
 export class TaskManagerComponent {
-  tasks=signal<Task[]>([]);
+  tasks = signal<Task[]>([]);
+
+  taskToEdit = signal<Task | null>(null);
 
 
   ngOnInit() {
@@ -21,7 +23,7 @@ export class TaskManagerComponent {
   }
 
   addTask(task: Task) {
-    this.tasks.update(tasks => [...tasks, task]); 
+    this.tasks.update(tasks => [...tasks, task]);
     console.log(this.tasks());
     this.saveToLocalStorage();
   }
@@ -32,22 +34,29 @@ export class TaskManagerComponent {
   }
 
   toggleTask(task: Task) {
-  this.tasks.update(tasks => 
-    tasks.map(t => 
-      t.id === task.id ? { ...t, completed: !t.completed } : t
-    )
-  );
-  this.saveToLocalStorage();
-}
-  
-  editTask(event: { task: Task, newTitle: string }) {
-  this.tasks.update(tasks => 
-    tasks.map(t => 
-      t.id === event.task.id ? { ...t, title: event.newTitle } : t
-    )
-  );
-  this.saveToLocalStorage();
-}
+    this.tasks.update(tasks =>
+      tasks.map(t =>
+        t.id === task.id ? { ...t, completed: !t.completed } : t
+      )
+    );
+    this.saveToLocalStorage();
+  }
+
+  editTask(task: Task) {
+    this.taskToEdit.set(task);
+  }
+
+  saveChanges(updatedTitle:string) {
+    const taskToUpdate = this.taskToEdit();
+    if (!taskToUpdate) return;
+    this.tasks.update(tasks =>
+      tasks.map(t =>
+        t.id === taskToUpdate.id ? { ...t, title:updatedTitle } : t
+      )
+    );
+    this.taskToEdit.set(null);
+    this.saveToLocalStorage();
+  }
 
   saveToLocalStorage() {
     localStorage.setItem('tasks', JSON.stringify(this.tasks()));

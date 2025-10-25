@@ -1,15 +1,23 @@
 <form #taskForm="ngForm" (ngSubmit)="onAddTask(taskForm)">
-    <input type="text" placeholder="Add a new task..." 
-        [(ngModel)]="taskTitle" name="taskTitle" 
-        required #titleInput="ngModel" />
-         <!-- Debug info -->
+    <input type="text" placeholder="Add a new task..." [(ngModel)]="taskTitle" name="taskTitle" required
+        #titleInput="ngModel" />
+    <!-- Debug info -->
     <div style="font-size: 12px; color: gray;">
         Invalid: {{ titleInput.invalid }}<br>
         Touched: {{ taskForm.touched }}<br>
         Dirty: {{titleInput.dirty }}
     </div>
     @if (titleInput.invalid && titleInput.dirty) {
-        <div class="error-message">Task title is required</div>
+    <div class="error-message">Task title is required</div>
     }
-    <button type="submit" [disabled]="taskForm.invalid" >Add Task</button>
+
+
+    <div class="task-actions">
+        @if(taskToEdit()){
+        <button type="submit">Save</button>
+        <button type="button" (click)="onCancelEdit(taskForm)">Cancel</button>
+        }@else{
+        <button type="submit" [disabled]="taskForm.invalid">Add Task</button>
+        }
+    </div>
 </form>
