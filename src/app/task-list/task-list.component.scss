@@ -1,27 +1,27 @@
-
 .task-item {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
   border-bottom: 1px solid #E8E9EB;
+
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #5B9F67;
+    cursor: pointer;
+  }
+
+  span {
+    flex: 1;
+    font-size: 16px;
+  }
 }
 
 .task-item:hover {
   background: #f8fafc;
 }
 
-.task-item input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  accent-color: #5B9F67;
-  cursor: pointer;
-}
-
-.task-item span {
-  flex: 1;
-  font-size: 16px;
-}
 
 .completed {
   text-decoration: line-through;
@@ -31,32 +31,26 @@
 .task-actions {
   display: flex;
   gap: 8px;
+
+  button {
+    padding: 6px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #f1f5f9;
+  }
+
+  button:last-child:hover {
+    background: #fee2e2;
+    border-color: #fecaca;
+  }
+
 }
 
-.task-actions button {
-  padding: 6px 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  background: white;
-  cursor: pointer;
-}
-.task-actions button:hover {
-  background: #f1f5f9;
-}
-
-.task-actions button:last-child:hover {
-  background: #fee2e2;
-  border-color: #fecaca;
-}
-
-input[type="text"].edit-input {
-  flex: 1;
-  padding: 8px 12px;
-  border: 2px solid #5B9F67;
-  border-radius: 6px;
-  font-size: 16px;
-  background: #f0f9f0;
-}
 .empty-state {
   text-align: center;
   padding: 3rem;
