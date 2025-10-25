@@ -1,4 +1,4 @@
-import { Component, output, input } from '@angular/core';
+import { Component, output, input, signal } from '@angular/core';
 import { NgClass } from '@angular/common';
 
 import { Task } from '../models/task';
@@ -17,7 +17,8 @@ export class TaskListComponent {
   editTask = output<{ task: Task, newTitle: string }>();
 
   tasks = input<Task[]>();
-  editingTaskId : number | null = null;
+
+  editingTaskId = signal<number | null>(null);
 
   toggleTaskCompletion(task: Task) {
     this.toggleTask.emit(task);
@@ -29,19 +30,19 @@ export class TaskListComponent {
   }
 
   isEditing(task: Task): boolean {
-    return this.editingTaskId === task.id;
+    return this.editingTaskId() === task.id;
   }
 
   cancelEdit() {
-    this.editingTaskId = null;
+    this.editingTaskId.set(null);
   }
 
   startEdit(task: Task) {
-    this.editingTaskId = task.id;
+    this.editingTaskId.set(task.id);
   }
 
   saveEdit(task: Task, newTitle: string) {
     this.editTask.emit({ task, newTitle });
-    this.editingTaskId = null;
+    this.editingTaskId.set(null);
   }
 }
