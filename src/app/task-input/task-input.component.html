@@ -1,9 +1,15 @@
-<form (ngSubmit)="onAddTask()" (submit)="$event.preventDefault()">
+<form #taskForm="ngForm" (ngSubmit)="onAddTask(taskForm)">
     <input type="text" placeholder="Add a new task..." 
         [(ngModel)]="taskTitle" name="taskTitle" 
         required #titleInput="ngModel" />
-    @if (titleInput.invalid && titleInput.touched) {
+         <!-- Debug info -->
+    <div style="font-size: 12px; color: gray;">
+        Invalid: {{ titleInput.invalid }}<br>
+        Touched: {{ taskForm.touched }}<br>
+        Dirty: {{titleInput.dirty }}
+    </div>
+    @if (titleInput.invalid && titleInput.dirty) {
         <div class="error-message">Task title is required</div>
     }
-    <button type="submit" [disabled]="titleInput.invalid">Add Task</button>
+    <button type="submit" [disabled]="taskForm.invalid" >Add Task</button>
 </form>

@@ -1,5 +1,5 @@
 import { Component, output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 
 import { Task } from '../models/task';
 
@@ -14,7 +14,7 @@ export class TaskInputComponent {
   taskTitle: string = '';
   addTask = output<Task>()
 
-  onAddTask() {
+  onAddTask(taskForm: NgForm) {
     if (!this.taskTitle) return;
     
     const newTask: Task = {
@@ -24,6 +24,7 @@ export class TaskInputComponent {
     }
 
     this.addTask.emit(newTask);
-    this.taskTitle = '';
+    //this.taskTitle = '';
+    taskForm.resetForm();
   }
 }
